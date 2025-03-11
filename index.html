@@ -1,78 +1,61 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2575.3">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px 'Helvetica Neue'; color: #313131; -webkit-text-stroke: #313131}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 16.0px 'Helvetica Neue'; color: #313131; -webkit-text-stroke: #313131; min-height: 18.0px}
-    span.s1 {font-kerning: none}
-  </style>
+    <title>Telegram Auth</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { 
+            padding: 20px; 
+            text-align: center; 
+            font-family: Arial; 
+        }
+        button { 
+            padding: 10px 20px; 
+            background: #0088cc; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
-<p class="p1"><span class="s1">&lt;html&gt;</span></p>
-<p class="p1"><span class="s1">&lt;head&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;title&gt;Telegram Auth&lt;/title&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script src="https://telegram.org/js/telegram-web-app.js"&gt;&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;style&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>body {<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 20px;<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-align: center;<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-family: Arial;<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>button {<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 10px 20px;<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: #0088cc;<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: white;<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: none;<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 5px;<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>cursor: pointer;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
-<p class="p1"><span class="s1">&lt;body&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;h1&gt;🔐 Авторизация&lt;/h1&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="user-data"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;button onclick="requestPhone()"&gt;Разрешить доступ к номеру&lt;/button&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Инициализация Web App</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const tg = Telegram.WebApp;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>tg.expand(); // На весь экран</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>tg.MainButton.hide();</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Показываем данные пользователя</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const user = tg.initDataUnsafe.user || {};</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.getElementById('user-data').innerHTML = `</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;p&gt;ID: ${user.id || 'недоступно'}&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;p&gt;Имя: ${user.first_name || 'недоступно'}&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;p&gt;Логин: @${user.username || 'недоступно'}&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>`;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Запрос номера телефона</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function requestPhone() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>tg.showPopup({</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>title: 'Доступ к номеру',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>message: 'Разрешить передачу номера?',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>buttons: [</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ id: 'cancel', type: 'cancel' },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>{ id: 'share', type: 'default', text: 'Поделиться' }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>]</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}, (btnId) =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (btnId === 'share') {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>tg.CloudStorage.getItem('phone').then(phone =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>alert('Ваш номер: ' + phone);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>tg.close();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+    <h1>🔐 Авторизация</h1>
+    <div id="user-data"></div>
+    <button onclick="requestPhone()">Разрешить доступ к номеру</button>
+
+    <script>
+        // Инициализация Web App
+        const tg = Telegram.WebApp;
+        tg.expand(); // На весь экран
+        tg.MainButton.hide();
+
+        // Показываем данные пользователя
+        const user = tg.initDataUnsafe.user || {};
+        document.getElementById('user-data').innerHTML = `
+            <p>ID: ${user.id || 'недоступно'}</p>
+            <p>Имя: ${user.first_name || 'недоступно'}</p>
+            <p>Логин: @${user.username || 'недоступно'}</p>
+        `;
+
+        // Запрос номера телефона
+        function requestPhone() {
+            tg.showPopup({
+                title: 'Доступ к номеру',
+                message: 'Разрешить передачу номера?',
+                buttons: [
+                    { id: 'cancel', type: 'cancel' },
+                    { id: 'share', type: 'default', text: 'Поделиться' }
+                ]
+            }, (btnId) => {
+                if (btnId === 'share') {
+                    tg.CloudStorage.getItem('phone').then(phone => {
+                        alert('Ваш номер: ' + phone);
+                        tg.close();
+                    });
+                }
+            });
+        }
+    </script>
 </body>
 </html>
