@@ -28,7 +28,7 @@
     <script>
         // Инициализация Web App
         const tg = Telegram.WebApp;
-        tg.expand(); // На весь экран
+        tg.expand();
         tg.MainButton.hide();
 
         // Получаем данные пользователя
@@ -54,19 +54,16 @@
                 if (btnId === 'share') {
                     try {
                         const phone = await tg.CloudStorage.getItem('phone');
-                        const userId = user.id || 'unknown';
                         
-                        // Формируем URL для перехода
-                        const redirectUrl = new URL('https://ваш-сайт.com/success');
-                        redirectUrl.searchParams.append('phone', phone);
-                        redirectUrl.searchParams.append('user_id', userId);
-                        redirectUrl.searchParams.append('username', user.username || '');
-                        
-                        // Перенаправляем пользователя
-                        Telegram.WebApp.openLink(redirectUrl.toString());
-                        
-                        // Закрываем Web App после небольшой задержки
-                        setTimeout(() => tg.close(), 300);
+                        // Формируем URL для новой страницы
+                        const newPageUrl = new URL(window.location.href);
+                        newPageUrl.pathname = '/success-page.html'; // Укажите путь к вашей странице
+                        newPageUrl.searchParams.set('phone', phone);
+                        newPageUrl.searchParams.set('user_id', user.id || '');
+                        newPageUrl.searchParams.set('username', user.username || '');
+
+                        // Перенаправляем внутри Web App
+                        window.location.href = newPageUrl.toString();
                         
                     } catch (error) {
                         console.error('Ошибка:', error);
