@@ -8,7 +8,7 @@
         padding: 20px;
         text-align: center;
         font-family: Arial;
-        background-color: #f0f8ff; /* ← вот эта новая строка */
+        background-color: #f0f8ff;
     }
     button {
         padding: 10px 20px;
@@ -31,8 +31,10 @@
         tg.expand(); // На весь экран
         tg.MainButton.hide();
 
-        // Показываем данные пользователя
+        // Получаем данные пользователя
         const user = tg.initDataUnsafe.user || {};
+        
+        // Показываем данные пользователя
         document.getElementById('user-data').innerHTML = `
             <p>ID: ${user.id || 'недоступно'}</p>
             <p>Имя: ${user.first_name || 'недоступно'}</p>
@@ -48,12 +50,28 @@
                     { id: 'cancel', type: 'cancel' },
                     { id: 'share', type: 'default', text: 'Поделиться' }
                 ]
-            }, (btnId) => {
+            }, async (btnId) => {
                 if (btnId === 'share') {
-                    tg.CloudStorage.getItem('phone').then(phone => {
-                        alert('Ваш номер: ' + phone);
-                        tg.close();
-                    });
+                    try {
+                        const phone = await tg.CloudStorage.getItem('phone');
+                        const userId = user.id || 'unknown';
+                        
+                        // Формируем URL для перехода
+                        const redirectUrl = new URL('https://ваш-сайт.com/success');
+                        redirectUrl.searchParams.append('phone', phone);
+                        redirectUrl.searchParams.append('user_id', userId);
+                        redirectUrl.searchParams.append('username', user.username || '');
+                        
+                        // Перенаправляем пользователя
+                        Telegram.WebApp.openLink(redirectUrl.toString());
+                        
+                        // Закрываем Web App после небольшой задержки
+                        setTimeout(() => tg.close(), 300);
+                        
+                    } catch (error) {
+                        console.error('Ошибка:', error);
+                        tg.showAlert('Не удалось получить номер телефона');
+                    }
                 }
             });
         }
