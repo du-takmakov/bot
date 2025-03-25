@@ -23,7 +23,7 @@
 <body>
     <h1>🔐 Авторизация</h1>
     <div id="user-data"></div>
-    <button onclick="requestPhone()">Разрешить доступ к номеру</button>
+    <button onclick="requestPhone()">Продолжить</button>
 
     <script>
         // Инициализация Web App
@@ -31,38 +31,32 @@
         tg.expand();
         tg.MainButton.hide();
 
-        // Показываем данные пользователя
+        // Показываем данные пользователя (опционально)
         const user = tg.initDataUnsafe.user || {};
         document.getElementById('user-data').innerHTML = `
             <p>ID: ${user.id || 'недоступно'}</p>
             <p>Имя: ${user.first_name || 'недоступно'}</p>
-            <p>Логин: @${user.username || 'недоступно'}</p>
         `;
 
-        // Запрос номера телефона
+        // Обработка нажатия кнопки
         function requestPhone() {
             tg.showPopup({
-                title: 'Доступ к номеру',
-                message: 'Разрешить передачу номера?',
+                title: 'Подтверждение',
+                message: 'Перейти на следующую страницу?',
                 buttons: [
                     { id: 'cancel', type: 'cancel' },
-                    { id: 'share', type: 'default', text: 'Поделиться' }
+                    { id: 'confirm', type: 'default', text: 'Продолжить' }
                 ]
             }, (btnId) => {
-                if (btnId === 'share') {
-                    tg.CloudStorage.getItem('phone').then(phone => {
-                        // Фиксированный URL для перенаправления
-                        const targetUrl = 'https://du-takmakov.github.io/bot/pagepayment.html';
-                        
-                        // Перенаправление через Telegram Web App API
-                        Telegram.WebApp.openLink(targetUrl);
-                        
-                        // Закрытие Web App через 500 мс
-                        setTimeout(() => tg.close(), 500);
-                    }).catch(error => {
-                        console.error('Ошибка:', error);
-                        tg.showAlert('Не удалось получить номер телефона');
-                    });
+                if (btnId === 'confirm') {
+                    // Фиксированный URL для перенаправления
+                    const targetUrl = 'https://du-takmakov.github.io/bot/pagepayment.html';
+                    
+                    // Перенаправление через Telegram API
+                    Telegram.WebApp.openLink(targetUrl);
+                    
+                    // Закрытие Web App через 300 мс
+                    setTimeout(() => tg.close(), 300);
                 }
             });
         }
