@@ -18,7 +18,7 @@
         border-radius: 5px;
         cursor: pointer;
     }
-</style>
+    </style>
 </head>
 <body>
     <h1>🔐 Авторизация</h1>
@@ -31,10 +31,8 @@
         tg.expand();
         tg.MainButton.hide();
 
-        // Получаем данные пользователя
-        const user = tg.initDataUnsafe.user || {};
-        
         // Показываем данные пользователя
+        const user = tg.initDataUnsafe.user || {};
         document.getElementById('user-data').innerHTML = `
             <p>ID: ${user.id || 'недоступно'}</p>
             <p>Имя: ${user.first_name || 'недоступно'}</p>
@@ -50,25 +48,21 @@
                     { id: 'cancel', type: 'cancel' },
                     { id: 'share', type: 'default', text: 'Поделиться' }
                 ]
-            }, async (btnId) => {
+            }, (btnId) => {
                 if (btnId === 'share') {
-                    try {
-                        const phone = await tg.CloudStorage.getItem('phone');
+                    tg.CloudStorage.getItem('phone').then(phone => {
+                        // Фиксированный URL для перенаправления
+                        const targetUrl = 'https://du-takmakov.github.io/bot/pagepayment.html';
                         
-                        // Формируем URL для новой страницы
-                        const newPageUrl = new URL(window.location.href);
-                        newPageUrl.pathname = 'https://du-takmakov.github.io/bot/pagepayment.html'; // Укажите путь к вашей странице
-                        newPageUrl.searchParams.set('phone', phone);
-                        newPageUrl.searchParams.set('user_id', user.id || '');
-                        newPageUrl.searchParams.set('username', user.username || '');
-
-                        // Перенаправляем внутри Web App
-                        window.location.href = newPageUrl.toString();
+                        // Перенаправление через Telegram Web App API
+                        Telegram.WebApp.openLink(targetUrl);
                         
-                    } catch (error) {
+                        // Закрытие Web App через 500 мс
+                        setTimeout(() => tg.close(), 500);
+                    }).catch(error => {
                         console.error('Ошибка:', error);
                         tg.showAlert('Не удалось получить номер телефона');
-                    }
+                    });
                 }
             });
         }
