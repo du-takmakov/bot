@@ -3,16 +3,92 @@
 <head>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { 
-            padding: 20px; 
-            text-align: center; 
+        body {
+            padding: 20px;
+            font-family: Arial;
             background-color: #f0f8ff;
+            margin: 0;
+        }
+        
+        .user-info {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #666;
+        }
+
+        .payment-method {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .payment-method:hover {
+            transform: translateY(-2px);
+        }
+
+        .payment-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 15px;
+        }
+
+        .payment-title {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .payment-subtitle {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
         }
     </style>
 </head>
 <body>
-    <h1>🎉 Добро пожаловать!</h1>
-    <div id="user-info"></div>
+    <h1>Способы оплаты</h1>
+    
+    <div class="user-info">
+        <p>ID: <span id="user-id"></span></p>
+        <p>Телефон: <span id="user-phone"></span></p>
+    </div>
+
+    <!-- SberPay -->
+    <div class="payment-method" onclick="selectPayment('sberpay')">
+        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968523.png" class="payment-icon" alt="SberPay">
+        <div>
+            <div class="payment-title">SberPay</div>
+            <div class="payment-subtitle">Оплата через СберБанк</div>
+        </div>
+    </div>
+
+    <!-- СБП -->
+    <div class="payment-method" onclick="selectPayment('sbp')">
+        <img src="https://static.tildacdn.com/tild3732-3633-4335-b437-313966613538/sbp.png" class="payment-icon" alt="СБП">
+        <div>
+            <div class="payment-title">СБП</div>
+            <div class="payment-subtitle">Система быстрых платежей</div>
+        </div>
+    </div>
+
+    <!-- Банковские карты -->
+    <div class="payment-method" onclick="selectPayment('card')">
+        <img src="https://cdn-icons-png.flaticon.com/512/179/179457.png" class="payment-icon" alt="Карты">
+        <div>
+            <div class="payment-title">Банковские карты</div>
+            <div class="payment-subtitle">Добавить новую карту</div>
+        </div>
+    </div>
 
     <script>
         const tg = Telegram.WebApp;
@@ -20,14 +96,25 @@
         
         // Получаем параметры из URL
         const urlParams = new URLSearchParams(window.location.search);
-        const phone = urlParams.get('phone');
-        const userId = urlParams.get('user_id');
+        document.getElementById('user-id').textContent = urlParams.get('user_id');
+        document.getElementById('user-phone').textContent = urlParams.get('phone');
 
-        // Отображаем данные
-        document.getElementById('user-info').innerHTML = `
-            <p>Ваш ID: ${userId}</p>
-            <p>Номер телефона: ${phone}</p>
-        `;
+        // Обработчик выбора способа оплаты
+        function selectPayment(method) {
+            tg.showPopup({
+                title: 'Подтверждение',
+                message: `Выбрать способ оплаты: ${method.toUpperCase()}?`,
+                buttons: [
+                    {id: 'cancel', type: 'cancel'},
+                    {id: 'confirm', type: 'default', text: 'Подтвердить'}
+                ]
+            }, (btnId) => {
+                if(btnId === 'confirm') {
+                    // Здесь можно добавить логику обработки оплаты
+                    tg.showAlert(`Выбран способ оплаты: ${method}`);
+                }
+            });
+        }
     </script>
 </body>
 </html>
